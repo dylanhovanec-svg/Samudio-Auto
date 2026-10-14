@@ -1,0 +1,72 @@
+/* Samudio Auto — shared styles.
+   Page layout is inline in each HTML file (exported from the approved design).
+   This file holds the brand tokens, base rules, and the phone-width behavior
+   (menu button + fixed Call/Text bar). */
+
+:root {
+  --red: #BC1823;          /* Piston Red — logo icon */
+  --red-dark: #9E1420;     /* hover / pressed */
+  --red-on-dark: #F0505A;  /* small red text on black (meets 4.5:1) */
+  --ink: #0C0C0D;          /* near-black UI background */
+  --char: #17171A;         /* raised surface on black */
+  --line-dark: #2A2A2E;
+  --steel: #F3F5F9;        /* reverse wordmark color — light sections */
+  --line: #DDE0E7;
+  --espresso: #2E0800;     /* logo tagline color — eyebrow labels */
+  --text: #16161A;
+  --muted: #4A4C55;
+  --muted-on-dark: #B4B7BF;
+  --font-display: 'Smooch Sans', 'Arial Narrow', sans-serif;
+  --font-body: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--ink); }
+a { color: var(--red); }
+a:hover { color: var(--red-dark); }
+img { max-width: 100%; }
+:focus-visible { outline: 3px solid var(--red-on-dark); outline-offset: 3px; }
+
+.menu-btn,
+.mobile-callbar { display: none; }
+
+@media (max-width: 820px) {
+  .menu-btn {
+    display: flex; align-items: center; justify-content: center;
+    width: 48px; height: 48px; padding: 0; box-sizing: border-box;
+    border: 1px solid var(--line-dark); border-radius: 8px;
+    background: var(--char); color: var(--steel); cursor: pointer;
+  }
+  .header-call { display: none !important; }
+
+  .site-nav {
+    display: none !important;
+    width: 100%; flex-direction: column; align-items: stretch !important; gap: 0 !important;
+    padding-bottom: 8px;
+  }
+  .site-nav.is-open { display: flex !important; }
+  .site-nav a {
+    display: flex !important; min-height: 52px !important; padding: 0 !important;
+    border-bottom: 1px solid #1F1F23 !important; font-size: 17px !important;
+  }
+  .site-nav a[aria-current="page"] { color: #FFFFFF !important; border-bottom-color: var(--red) !important; }
+
+  .mobile-callbar {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    background: rgba(12, 12, 13, 0.96); border-top: 1px solid var(--line-dark);
+  }
+  .mobile-callbar a {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 52px; box-sizing: border-box; border-radius: 8px;
+    font: 700 16px/1 var(--font-body); text-decoration: none;
+  }
+  .mobile-callbar .cb-call { background: var(--red); color: #FFFFFF; }
+  .mobile-callbar .cb-text { border: 2px solid #4A4C55; color: var(--steel); }
+  body { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
