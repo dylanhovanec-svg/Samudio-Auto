@@ -38,11 +38,9 @@ Plain static HTML. No build step. Preview with `npx serve site`, or open `site/i
 | Travel fee | $50 |
 | Diagnostic | $50 |
 | Oil change | $40 + oil & oil filter |
-| Brake job (parts + labor) | $125/axle sedan · $175/axle SUV/truck |
+| Brake job | By appointment: no posted price ("call or text for a price"), links to booking |
 | Roadside assistance | $75 daytime (7am–10pm) · $175 late night (10pm–7am) |
 | Battery service, tire rotation, electrical fixes | No posted price: "Text for a quote" |
-
-Open question: the brake price is presented as labor per axle with parts extra (Home shows "$125–$175 per axle + parts"). Confirm with the owner before launch.
 
 ### Content rules
 
@@ -89,9 +87,9 @@ Never recolor, stretch or retype the wordmark.
 
 ## To do before launch
 
-1. **Koalendar:** set the accent color to Piston Red `#BC1823`, add booking questions (vehicle, where the car is, what's going on), set real availability, and confirm notifications reach Jayden. Test a booking on the live site.
+1. ~~Koalendar setup (accent color, booking questions, availability, notifications, test booking)~~: done by the owner.
 2. Bring phone layouts closer to `design-reference/home-phone.html` where the responsive pages differ (compact service cards, full-width buttons).
 3. SEO: add AutoRepair / LocalBusiness JSON-LD (name, telephone, email, areaServed: Knoxville, TN), Open Graph tags and a social share image.
 4. Optional: self-host Smooch Sans and Montserrat instead of loading them from Google Fonts.
-5. Deploy. The old site is on Vercel; this folder deploys as a static site with `site/` as the output directory. Then point the domain.
+5. ~~Deploy~~: done by the owner. The old site is on Vercel; this folder deploys as a static site with `site/` as the output directory. Then point the domain.
 6. After any change, run an accessibility pass: keyboard navigation, focus states, contrast.
