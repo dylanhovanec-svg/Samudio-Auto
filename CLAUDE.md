@@ -13,7 +13,7 @@ The pages in `site/` were exported from an approved design. Treat them as the vi
 | `site/about.html` | About / Meet Jayden |
 | `site/contact.html` | Contact |
 | `site/assets/site.css` | Brand tokens, base rules, phone-width menu and fixed Call/Text bar |
-| `site/assets/site.js` | Phone-width menu toggle; work videos; page wipe + intro bumper; scroll builds; schedule form |
+| `site/assets/site.js` | Phone-width menu toggle; work videos; page wipe + intro bumper; scroll builds; Koalendar booking + floating button |
 | `site/assets/logo/` | Logo files (see Logo usage) |
 | `site/assets/photos/` | Photos of Jayden (metadata stripped) |
 | `site/assets/videos/` | Silent looping work clips (MP4 + WebM, metadata stripped). They replace the `jayden-work-*` photos, which stay as the poster frame and the reduced-motion fallback |
@@ -83,12 +83,12 @@ Never recolor, stretch or retype the wordmark.
 - Every page repeats the header and footer. Keep them in sync, or turn them into partials.
 - **Page wipe / loading screen:** every page starts with `<div class="wipe">` (first in `<body>`) and a one-line script in `<head>` that adds `.wipe-in` before first paint. A black panel with a red leading edge and the spinning piston covers the page until fonts load, then wipes off; internal links wipe it back on before navigating. The first page of each visit plays the **bumper** instead: the piston spins in and lands above the wordmark (`samudio-wordmark-light.png`, cropped unaltered from the stacked logo). Tap skips it. Reduced motion gets a short fade, no spin.
 - **Scroll builds:** `site.js` tags the content of every section after the first with `.build` so it rises in as it scrolls into view (cards one at a time). Off for reduced motion and without JS.
-- **Schedule a job** (`#schedule` on Home and Contact, linked from the nav as "Schedule"): the form doesn't post anywhere. On submit it opens the visitor's texting app (or email, via "Email it instead") with the request written out to Jayden. Keep both copies of the form in sync.
+- **Booking (Koalendar, https://koalendar.com/e/samudioauto):** `#schedule` on Home and Contact holds the Koalendar inline calendar (`#inline-widget-samudioauto`; `site.js` loads Koalendar's `widget.js` only on those pages), with a fallback link to the booking page plus text/call links. Every page has a floating red **Book a job** button (`.book-fab`) that opens the booking page in a `<dialog>` (iframe with `?embed=true`); without JS it opens Koalendar in a new tab. The button hides while `#schedule` is on screen and sits above the phone Call/Text bar. Booking questions, hours and notifications are set in the Koalendar dashboard, not here.
 - Below 820px the nav collapses behind a menu button and a fixed Call/Text bar sits at the bottom (`site.css`, `site.js`).
 
 ## To do before launch
 
-1. **Schedule form** works by opening a pre-filled text/email (no server). If the owner wants requests delivered without the customer pressing Send, or real calendar booking, wire it to a service (Formspree, a Vercel function plus Resend, or Calendly/Cal.com).
+1. **Koalendar:** set the accent color to Piston Red `#BC1823`, add booking questions (vehicle, where the car is, what's going on), set real availability, and confirm notifications reach Jayden. Test a booking on the live site.
 2. Bring phone layouts closer to `design-reference/home-phone.html` where the responsive pages differ (compact service cards, full-width buttons).
 3. SEO: add AutoRepair / LocalBusiness JSON-LD (name, telephone, email, areaServed: Knoxville, TN), Open Graph tags and a social share image.
 4. Optional: self-host Smooch Sans and Montserrat instead of loading them from Google Fonts.

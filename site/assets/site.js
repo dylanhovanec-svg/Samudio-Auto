@@ -107,60 +107,6 @@
   });
 })();
 
-// Schedule form: turn the answers into a text (or email) to Jayden, ready to send.
-(function () {
-  var forms = document.querySelectorAll('form.schedule-form');
-  forms.forEach(function (form) {
-    var dateInput = form.querySelector('input[type="date"]');
-    if (dateInput) {
-      var d = new Date();
-      dateInput.min = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
-    }
-    var error = form.querySelector('.schedule-error');
-
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var missing = Array.prototype.filter.call(form.querySelectorAll('[required]'), function (el) {
-        var bad = !el.value.trim();
-        el.setAttribute('aria-invalid', bad ? 'true' : 'false');
-        el.style.borderColor = bad ? '#BC1823' : '';
-        return bad;
-      });
-      if (missing.length) {
-        if (error) error.textContent = 'Please fill in your name, phone, the service and where the car is.';
-        missing[0].focus();
-        return;
-      }
-      if (error) error.textContent = '';
-
-      var v = function (n) { var el = form.elements[n]; return el ? el.value.trim() : ''; };
-      var day = v('date');
-      if (day) {
-        var parts = day.split('-');
-        day = new Date(+parts[0], parts[1] - 1, +parts[2]).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
-      }
-      var when = [day, v('time')].filter(Boolean).join(', ') || 'Flexible';
-      var lines = [
-        'Hi Jayden, I’d like to schedule a job.',
-        'Name: ' + v('name'),
-        'Phone: ' + v('phone'),
-        'Service: ' + v('service'),
-        v('vehicle') && 'Vehicle: ' + v('vehicle'),
-        'When: ' + when,
-        'Car is at: ' + v('location'),
-        v('details') && 'Details: ' + v('details')
-      ].filter(Boolean);
-      lines.splice(1, 0, '');  // blank line after the greeting
-      var body = encodeURIComponent(lines.join('\n'));
-
-      var viaEmail = e.submitter && e.submitter.value === 'email';
-      window.location.href = viaEmail
-        ? 'mailto:Samudioauto@gmail.com?subject=' + encodeURIComponent('Schedule a job: ' + v('service')) + '&body=' + body
-        : 'sms:+18653158860?&body=' + body;
-    });
-  });
-})();
-
 // Scroll builds: sections assemble piece by piece as you scroll down to them.
 (function () {
   if (!('IntersectionObserver' in window)) return;
@@ -198,4 +144,46 @@
   } else {
     start();
   }
+})();
+
+// Booking (Koalendar): inline calendar in #schedule, plus a floating "Book a job" button
+// that opens the booking page in a dialog. Without JS the button just opens Koalendar.
+(function () {
+  var BOOKING_URL = 'https://koalendar.com/e/samudioauto';
+
+  if (document.getElementById('inline-widget-samudioauto')) {
+    window.Koalendar = window.Koalendar || function () { (Koalendar.props = Koalendar.props || []).push(arguments); };
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://koalendar.com/assets/widget.js';
+    document.head.appendChild(s);
+    Koalendar('inline', { url: BOOKING_URL, selector: '#inline-widget-samudioauto' });
+  }
+
+  var fab = document.querySelector('.book-fab');
+  var dialog = document.querySelector('.book-dialog');
+  if (!fab) return;
+
+  // Hide the floating button while the inline calendar is on screen.
+  var inline = document.querySelector('#schedule');
+  if (inline && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      fab.classList.toggle('is-hidden', entries[0].isIntersecting);
+    }, { threshold: 0.15 }).observe(inline);
+  }
+
+  if (!dialog || typeof dialog.showModal !== 'function') return;
+  var frame = dialog.querySelector('iframe');
+  fab.addEventListener('click', function (e) {
+    e.preventDefault();
+    if (!frame.src) frame.src = frame.dataset.src;
+    dialog.showModal();
+    document.documentElement.classList.add('book-open');
+  });
+  dialog.querySelector('.book-dialog__close').addEventListener('click', function () { dialog.close(); });
+  dialog.addEventListener('click', function (e) { if (e.target === dialog) dialog.close(); });  // tap outside
+  dialog.addEventListener('close', function () {
+    document.documentElement.classList.remove('book-open');
+    fab.focus();
+  });
 })();
