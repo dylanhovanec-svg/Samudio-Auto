@@ -195,3 +195,43 @@ html.book-open { overflow: hidden; }
 }
 html.is-scrolled .site-header { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35); }
 html { scroll-padding-top: 100px; }
+
+/* ---------- Phone layout (matches design-reference/home-phone.html) ----------
+   Page markup is inline-styled from the design export, so phone overrides
+   need !important. Desktop is untouched. */
+@media (max-width: 600px) {
+  .site-header img { height: 40px !important; }
+  html { scroll-padding-top: 84px; }
+
+  /* Full-width buttons */
+  .btn-row { flex-direction: column; }
+  .btn-row > a { width: 100%; }
+
+  /* Home hero: copy, buttons, photo, then the price strip */
+  .hero-grid { flex-direction: column; align-items: stretch !important; gap: 28px !important; }
+  .hero-copy { display: contents !important; }
+  .hero-copy > * { order: 1; }
+  .hero-photo { order: 2; flex: none !important; }
+  .hero-stats { order: 3; display: grid !important; grid-template-columns: 1fr 1fr; gap: 20px 16px !important; }
+  .hero-stats > a { margin-left: 0 !important; justify-self: start; align-self: end; }
+
+  /* Compact service cards: icon beside the title */
+  .svc-card {
+    display: grid !important; grid-template-columns: 44px 1fr; gap: 6px 16px !important;
+    padding: 20px !important; align-items: start;
+  }
+  .svc-card > span[aria-hidden] { grid-row: 1 / span 3; width: 44px !important; height: 44px !important; }
+  .svc-card > span[aria-hidden] svg { width: 24px; height: 24px; }
+  .svc-card > h3 { font-size: 28px !important; }
+  .svc-card > p { font-size: 15px !important; }
+  .svc-card > div:last-child { border-top: 0 !important; padding-top: 4px !important; }
+
+  /* Roadside: prices side by side, full-width call button */
+  .roadside-card { padding: 24px 20px !important; }
+  .roadside-card > div:first-child { gap: 14px !important; }
+  .roadside-card > div:first-child > span[aria-hidden] { width: 44px !important; height: 44px !important; }
+  .roadside-card h3 { font-size: 30px !important; }
+  .roadside-prices { display: grid !important; grid-template-columns: 1fr 1fr; gap: 10px !important; width: 100%; }
+  .roadside-prices > div { min-width: 0 !important; padding: 12px 14px !important; }
+  .roadside-prices > a { grid-column: 1 / -1; width: 100%; }
+}

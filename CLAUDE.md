@@ -18,6 +18,7 @@ The pages in `site/` were exported from an approved design. Treat them as the vi
 | `site/assets/photos/` | Photos of Jayden (metadata stripped) |
 | `site/assets/videos/` | Silent looping work clips (MP4 + WebM, metadata stripped). They replace the `jayden-work-*` photos, which stay as the poster frame and the reduced-motion fallback |
 | `site/assets/favicon.png`, `apple-touch-icon.png` | Icons made from the piston mark |
+| `site/assets/og-image.jpg` | Link-preview image (Jayden + stacked logo) |
 | `design-reference/home-phone.html` | Approved phone layout (390 px) of Home. Open it in a browser. |
 
 Plain static HTML. No build step. Preview with `npx serve site`, or open `site/index.html`.
@@ -88,8 +89,8 @@ Never recolor, stretch or retype the wordmark.
 ## To do before launch
 
 1. ~~Koalendar setup (accent color, booking questions, availability, notifications, test booking)~~: done by the owner.
-2. Bring phone layouts closer to `design-reference/home-phone.html` where the responsive pages differ (compact service cards, full-width buttons).
-3. SEO: add AutoRepair / LocalBusiness JSON-LD (name, telephone, email, areaServed: Knoxville, TN), Open Graph tags and a social share image.
+2. ~~Phone layouts~~: done. Below 600px, `site.css` restyles via classes (`btn-row`, `hero-*`, `svc-card`, `roadside-*`): full-width buttons, Home photo before the price strip, compact icon-beside-title service cards, side-by-side roadside prices, 40px header logo.
+3. ~~SEO~~: done. Every page has Open Graph/Twitter tags with `assets/og-image.jpg` (1200×630); Home has AutoRepair JSON-LD. Image URLs are root-relative (`/assets/...`): once the live domain is known, make `og:image` and the JSON-LD `image`/`logo` absolute (`https://<domain>/assets/...`) and add `og:url` and `<link rel="canonical">` so Facebook and Google read them reliably.
 4. Optional: self-host Smooch Sans and Montserrat instead of loading them from Google Fonts.
 5. ~~Deploy~~: done by the owner. The old site is on Vercel; this folder deploys as a static site with `site/` as the output directory. Then point the domain.
 6. After any change, run an accessibility pass: keyboard navigation, focus states, contrast.
