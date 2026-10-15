@@ -29,6 +29,7 @@ Plain static HTML. No build step. Preview with `npx serve site`, or open `site/i
 - Owner and mechanic: Jayden
 - Phone, call or text: (865) 315-8860 → `tel:+18653158860`, `sms:+18653158860`
 - Email: Samudioauto@gmail.com
+- Website: https://samudio-auto.vercel.app
 - Area: Knoxville, TN. Fully mobile: he comes to the customer's home, work or roadside.
 - Hours: scheduled service by appointment; roadside help day or night.
 
@@ -90,7 +91,7 @@ Never recolor, stretch or retype the wordmark.
 
 1. ~~Koalendar setup (accent color, booking questions, availability, notifications, test booking)~~: done by the owner.
 2. ~~Phone layouts~~: done. Below 600px, `site.css` restyles via classes (`btn-row`, `hero-*`, `svc-card`, `roadside-*`): full-width buttons, Home photo before the price strip, compact icon-beside-title service cards, side-by-side roadside prices, 40px header logo.
-3. ~~SEO~~: done. Every page has Open Graph/Twitter tags with `assets/og-image.jpg` (1200×630); Home has AutoRepair JSON-LD. Image URLs are root-relative (`/assets/...`): once the live domain is known, make `og:image` and the JSON-LD `image`/`logo` absolute (`https://<domain>/assets/...`) and add `og:url` and `<link rel="canonical">` so Facebook and Google read them reliably.
+3. ~~SEO~~: done. Live site: https://samudio-auto.vercel.app (clean URLs: `/services`, `/about`, `/contact`). Every page has a canonical link, Open Graph/Twitter tags and `assets/og-image.jpg` (1200×630); Home has AutoRepair JSON-LD. All of these use absolute URLs on that domain: update them if a custom domain is added.
 4. Optional: self-host Smooch Sans and Montserrat instead of loading them from Google Fonts.
 5. ~~Deploy~~: done by the owner. The old site is on Vercel; this folder deploys as a static site with `site/` as the output directory. Then point the domain.
 6. After any change, run an accessibility pass: keyboard navigation, focus states, contrast.
