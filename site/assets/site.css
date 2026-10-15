@@ -70,3 +70,77 @@ img { max-width: 100%; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 }
+
+/* ---------- Page wipe + loading screen ----------
+   A black panel with a red leading edge slides across the screen with the
+   piston spinning in it. It covers the page while it loads, then wipes off;
+   clicking an internal link wipes it back on before navigating. The <div
+   class="wipe"> sits first in <body>; an inline script in <head> adds
+   .wipe-in before first paint, so without JS nothing is ever shown. */
+.wipe { display: none; }
+html.wipe-in .wipe,
+html.wipe-out .wipe {
+  display: block; position: fixed; inset: 0; z-index: 9999;
+  overflow: hidden; pointer-events: auto;
+}
+.wipe-panel {
+  position: absolute; inset: 0;
+  background: var(--ink);
+  box-shadow: 10px 0 0 var(--red);
+  display: flex; align-items: center; justify-content: center;
+  will-change: transform;
+}
+.wipe-piston {
+  width: clamp(120px, 26vw, 200px); height: auto;
+  animation: piston-spin 0.9s linear infinite;
+}
+/* Arriving: cover, then slide off to the right. The delayed exit is a failsafe
+   in case the script never marks the page ready. */
+html.wipe-in .wipe-panel { animation: wipe-off 0.45s cubic-bezier(.7, 0, .3, 1) 3s forwards; }
+html.wipe-in.wipe-done .wipe-panel { animation-delay: 0s; }
+html.wipe-in.wipe-done .wipe { pointer-events: none; }
+/* Leaving: slide on from the left. */
+html.wipe-out .wipe-panel { animation: wipe-on 0.45s cubic-bezier(.7, 0, .3, 1) forwards; }
+
+@keyframes wipe-on  { from { transform: translateX(calc(-100% - 10px)); } to { transform: translateX(0); } }
+@keyframes wipe-off { from { transform: translateX(0); } to { transform: translateX(calc(100% + 10px)); } }
+@keyframes piston-spin { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .wipe-piston { animation: none; }
+  .wipe-panel { box-shadow: none; }
+  html.wipe-in .wipe-panel { animation-name: wipe-fade-out; animation-duration: 0.2s; }
+  html.wipe-out .wipe-panel { animation-name: wipe-fade-in; animation-duration: 0.2s; }
+  @keyframes wipe-fade-in  { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes wipe-fade-out { from { opacity: 1; } to { opacity: 0; } }
+}
+
+/* ---------- Scroll builds ----------
+   site.js tags section content with .build; each piece rises into place as it
+   scrolls into view. Nothing is hidden without JS or with reduced motion. */
+.build {
+  opacity: 0; transform: translateY(28px);
+  transition: opacity 0.6s ease, transform 0.7s cubic-bezier(.2, .7, .2, 1);
+  transition-delay: var(--build-delay, 0ms);
+}
+.build.is-built { opacity: 1; transform: none; }
+
+/* ---------- Intro bumper (first page of each visit) ----------
+   The piston spins in and settles where it sits in the stacked logo, then the
+   wordmark (cropped unaltered from the stacked logo file) rises in beneath it. */
+.wipe-mark { display: flex; flex-direction: column; align-items: center; }
+.wipe-wordmark { display: none; }
+html.bumper .wipe-mark { width: min(70vw, 340px); align-items: flex-start; }
+html.bumper .wipe-piston {
+  width: 81.58%; margin-left: 9.21%;
+  animation: piston-land 1.15s cubic-bezier(.12, .6, .25, 1) both;
+}
+html.bumper .wipe-wordmark {
+  display: block; width: 100%; height: auto; margin-top: 12.43%;
+  animation: wordmark-rise 0.5s ease-out 0.95s both;
+}
+html.bumper .wipe { cursor: pointer; }
+@keyframes piston-land { from { transform: rotate(-900deg) scale(0.4); opacity: 0; } 20% { opacity: 1; } to { transform: rotate(0) scale(1); opacity: 1; } }
+@keyframes wordmark-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+.schedule-error:empty { display: none; }

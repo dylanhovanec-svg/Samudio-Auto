@@ -13,7 +13,7 @@ The pages in `site/` were exported from an approved design. Treat them as the vi
 | `site/about.html` | About / Meet Jayden |
 | `site/contact.html` | Contact |
 | `site/assets/site.css` | Brand tokens, base rules, phone-width menu and fixed Call/Text bar |
-| `site/assets/site.js` | Phone-width menu toggle; pauses work videos off-screen and for reduced motion |
+| `site/assets/site.js` | Phone-width menu toggle; work videos; page wipe + intro bumper; scroll builds; schedule form |
 | `site/assets/logo/` | Logo files (see Logo usage) |
 | `site/assets/photos/` | Photos of Jayden (metadata stripped) |
 | `site/assets/videos/` | Silent looping work clips (MP4 + WebM, metadata stripped). They replace the `jayden-work-*` photos, which stay as the poster frame and the reduced-motion fallback |
@@ -81,11 +81,14 @@ Never recolor, stretch or retype the wordmark.
 
 - Styles are mostly inline because they were exported from the design tool. If you move to a framework or shared CSS, keep the look identical.
 - Every page repeats the header and footer. Keep them in sync, or turn them into partials.
+- **Page wipe / loading screen:** every page starts with `<div class="wipe">` (first in `<body>`) and a one-line script in `<head>` that adds `.wipe-in` before first paint. A black panel with a red leading edge and the spinning piston covers the page until fonts load, then wipes off; internal links wipe it back on before navigating. The first page of each visit plays the **bumper** instead: the piston spins in and lands above the wordmark (`samudio-wordmark-light.png`, cropped unaltered from the stacked logo). Tap skips it. Reduced motion gets a short fade, no spin.
+- **Scroll builds:** `site.js` tags the content of every section after the first with `.build` so it rises in as it scrolls into view (cards one at a time). Off for reduced motion and without JS.
+- **Schedule a job** (`#schedule` on Home and Contact, linked from the nav as "Schedule"): the form doesn't post anywhere. On submit it opens the visitor's texting app (or email, via "Email it instead") with the request written out to Jayden. Keep both copies of the form in sync.
 - Below 820px the nav collapses behind a menu button and a fixed Call/Text bar sits at the bottom (`site.css`, `site.js`).
 
 ## To do before launch
 
-1. **Contact form** ("Request a visit" on `contact.html`) is design-only. Wire it to Samudioauto@gmail.com (for example Formspree, or a Vercel function plus Resend), or remove it if the owner only wants calls and texts.
+1. **Schedule form** works by opening a pre-filled text/email (no server). If the owner wants requests delivered without the customer pressing Send, or real calendar booking, wire it to a service (Formspree, a Vercel function plus Resend, or Calendly/Cal.com).
 2. Bring phone layouts closer to `design-reference/home-phone.html` where the responsive pages differ (compact service cards, full-width buttons).
 3. SEO: add AutoRepair / LocalBusiness JSON-LD (name, telephone, email, areaServed: Knoxville, TN), Open Graph tags and a social share image.
 4. Optional: self-host Smooch Sans and Montserrat instead of loading them from Google Fonts.
