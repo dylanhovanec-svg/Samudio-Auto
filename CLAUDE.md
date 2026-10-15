@@ -13,9 +13,10 @@ The pages in `site/` were exported from an approved design. Treat them as the vi
 | `site/about.html` | About / Meet Jayden |
 | `site/contact.html` | Contact |
 | `site/assets/site.css` | Brand tokens, base rules, phone-width menu and fixed Call/Text bar |
-| `site/assets/site.js` | Phone-width menu toggle |
+| `site/assets/site.js` | Phone-width menu toggle; pauses work videos off-screen and for reduced motion |
 | `site/assets/logo/` | Logo files (see Logo usage) |
 | `site/assets/photos/` | Photos of Jayden (metadata stripped) |
+| `site/assets/videos/` | Silent looping work clips (MP4 + WebM, metadata stripped). They replace the `jayden-work-*` photos, which stay as the poster frame and the reduced-motion fallback |
 | `site/assets/favicon.png`, `apple-touch-icon.png` | Icons made from the piston mark |
 | `design-reference/home-phone.html` | Approved phone layout (390 px) of Home. Open it in a browser. |
 
