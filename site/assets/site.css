@@ -185,3 +185,13 @@ html.book-open { overflow: hidden; }
   .book-dialog { width: 100vw; height: 100dvh; border-radius: 0; }
 }
 @media (prefers-reduced-motion: reduce) { .book-fab { transition: none; } }
+
+/* ---------- Sticky header ----------
+   The header stays pinned to the top while you scroll. scroll-padding keeps
+   in-page jumps (like #schedule) from landing underneath it. */
+.site-header {
+  position: sticky; top: 0; z-index: 800;
+  transition: box-shadow 0.2s ease;
+}
+html.is-scrolled .site-header { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35); }
+html { scroll-padding-top: 100px; }

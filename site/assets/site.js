@@ -187,3 +187,11 @@
     fab.focus();
   });
 })();
+
+// Sticky header: add a soft shadow once the page has scrolled.
+(function () {
+  var root = document.documentElement;
+  function update() { root.classList.toggle('is-scrolled', window.scrollY > 4); }
+  update();
+  window.addEventListener('scroll', update, { passive: true });
+})();
