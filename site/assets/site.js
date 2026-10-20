@@ -146,8 +146,9 @@
   }
 })();
 
-// Booking (Koalendar): inline calendar in #schedule, plus a floating "Book a job" button
-// that opens the booking page in a dialog. Without JS the button just opens Koalendar.
+// Booking (Koalendar): inline calendar in #schedule, plus "Book" buttons (the floating
+// "Book a job" button on larger screens, the Book button in the phone Call/Text bar)
+// that open the booking page in a dialog. Without JS those buttons just open Koalendar.
 (function () {
   var BOOKING_URL = 'https://koalendar.com/e/samudioauto';
 
@@ -161,30 +162,42 @@
   }
 
   var fab = document.querySelector('.book-fab');
+  var triggers = document.querySelectorAll('.book-fab, .cb-book');
   var dialog = document.querySelector('.book-dialog');
-  if (!fab) return;
+  if (!triggers.length) return;
 
-  // Hide the floating button while the inline calendar is on screen.
-  var inline = document.querySelector('#schedule');
-  if (inline && 'IntersectionObserver' in window) {
-    new IntersectionObserver(function (entries) {
-      fab.classList.toggle('is-hidden', entries[0].isIntersecting);
-    }, { threshold: 0.15 }).observe(inline);
+  // Hide the floating button while the inline calendar or the footer is on screen,
+  // so it never covers the calendar or the footer text.
+  if (fab && 'IntersectionObserver' in window) {
+    var onScreen = new Set();
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) onScreen.add(e.target); else onScreen.delete(e.target);
+      });
+      fab.classList.toggle('is-hidden', onScreen.size > 0);
+    }, { threshold: 0.15 });
+    [document.querySelector('#schedule'), document.querySelector('footer')].forEach(function (el) {
+      if (el) io.observe(el);
+    });
   }
 
   if (!dialog || typeof dialog.showModal !== 'function') return;
   var frame = dialog.querySelector('iframe');
-  fab.addEventListener('click', function (e) {
-    e.preventDefault();
-    if (!frame.src) frame.src = frame.dataset.src;
-    dialog.showModal();
-    document.documentElement.classList.add('book-open');
+  var lastTrigger = null;
+  triggers.forEach(function (trigger) {
+    trigger.addEventListener('click', function (e) {
+      e.preventDefault();
+      lastTrigger = trigger;
+      if (!frame.src) frame.src = frame.dataset.src;
+      dialog.showModal();
+      document.documentElement.classList.add('book-open');
+    });
   });
   dialog.querySelector('.book-dialog__close').addEventListener('click', function () { dialog.close(); });
   dialog.addEventListener('click', function (e) { if (e.target === dialog) dialog.close(); });  // tap outside
   dialog.addEventListener('close', function () {
     document.documentElement.classList.remove('book-open');
-    fab.focus();
+    if (lastTrigger) lastTrigger.focus();
   });
 })();
 
