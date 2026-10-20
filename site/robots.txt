@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://samudio-auto.vercel.app/sitemap.xml
