@@ -37,7 +37,7 @@ Plain static HTML. No build step. Preview with `npx serve site`, or open `site/i
 
 | Item | Price |
 |---|---|
-| Travel fee | $50 |
+| Travel fee | $50, added to each job (Jayden's booking page says "$50 Travel fee for each job"). Not confirmed whether it applies to roadside calls, so roadside copy doesn't mention it |
 | Diagnostic | $50 |
 | Oil change | $40 + oil & oil filter |
 | Brake job | By appointment: no posted price ("call or text for a price"), links to booking |
@@ -83,9 +83,10 @@ Never recolor, stretch or retype the wordmark.
 - Every page repeats the header and footer. Keep them in sync, or turn them into partials.
 - **Page wipe / loading screen:** every page starts with `<div class="wipe">` (first in `<body>`) and a one-line script in `<head>` that adds `.wipe-in` before first paint. A black panel with a red leading edge and the spinning piston covers the page until fonts load, then wipes off; internal links wipe it back on before navigating. The first page of each visit plays the **bumper** instead: the piston spins in and lands above the wordmark (`samudio-wordmark-light.png`, cropped unaltered from the stacked logo). Tap skips it. Reduced motion gets a short fade, no spin.
 - **Scroll builds:** `site.js` tags the content of every section after the first with `.build` so it rises in as it scrolls into view (cards one at a time). Off for reduced motion and without JS.
-- **Booking (Koalendar, https://koalendar.com/e/samudioauto):** `#schedule` on Home and Contact holds the Koalendar inline calendar (`#inline-widget-samudioauto`; `site.js` loads Koalendar's `widget.js` only on those pages), with a fallback link to the booking page plus text/call links. Every page has a floating red **Book a job** button (`.book-fab`) that opens the booking page in a `<dialog>` (iframe with `?embed=true`); without JS it opens Koalendar in a new tab. The button hides while `#schedule` is on screen and sits above the phone Call/Text bar. Booking questions, hours and notifications are set in the Koalendar dashboard, not here.
+- **Booking (Koalendar, https://koalendar.com/e/samudioauto):** `#schedule` on Home and Contact holds the Koalendar inline calendar (`#inline-widget-samudioauto`; `site.js` loads Koalendar's `widget.js` only on those pages), with a fallback link to the booking page plus text/call links. Every page has a floating red **Book a job** button (`.book-fab`) and, at phone width, a **Book** button in the fixed Call/Text bar (`.cb-book`); both open the booking page in a `<dialog>` (iframe with `?embed=true`), and without JS they open Koalendar in a new tab. The floating button is hidden at 820px and below (the bar's Book button replaces it) and hides while `#schedule` or the footer is on screen, so it never covers the calendar or the footer text. Booking questions, hours and notifications are set in the Koalendar dashboard, not here.
+- **404, robots, sitemap:** `site/404.html` is Vercel's custom not-found page. It's served at any missing URL, so its links and assets are root-relative (`/assets/...`, `/services`), unlike the other pages. Keep its header and footer in sync with the rest. `site/robots.txt` and `site/sitemap.xml` use absolute URLs on the live domain; update them (and the sitemap's `lastmod`) if the domain or the page list changes.
 - **Sticky header:** `.site-header` is `position: sticky` and gets a shadow once the page scrolls (`html.is-scrolled`). `scroll-padding-top` keeps in-page jumps clear of it; adjust it if the header height changes.
-- Below 820px the nav collapses behind a menu button and a fixed Call/Text bar sits at the bottom (`site.css`, `site.js`).
+- Below 820px the nav collapses behind a menu button and a fixed Call / Text / Book bar sits at the bottom (`site.css`, `site.js`).
 
 ## To do before launch
 
